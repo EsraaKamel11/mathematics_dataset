@@ -11,20 +11,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Checkout the repository code
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # Step 2: Set up Python environment
       - name: Set up Python
         uses: actions/setup-python@v4
+        with:
+          python-version: 3.8  # or your preferred Python version
 
+      # Step 3: Install dependencies
       - name: Install dependencies
-        run: pip install --upgrade mathematics_dataset/
-          
+        run: |
+          pip install --upgrade pip
+          pip install .
 
+      # Step 4: Generate the dataset
       - name: Generate dataset
         run: |
           python -m mathematics_dataset.generate_to_file --output_dir=algebra --filter=algebra
 
+      # Step 5: Upload the generated dataset as an artifact
       - name: Upload dataset artifact
         uses: actions/upload-artifact@v3
         with:
